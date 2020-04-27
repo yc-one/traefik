@@ -1086,15 +1086,7 @@ func getFrontendRedirect(i *extensionsv1beta1.Ingress, baseName, path string) *t
 			Permanent:   permanent,
 		}
 	}
-	remoteUrl, err := getStringSafeValue(i.Annotations, annotationKubernetesSendLogRemoteUrl, "")
-	if err != nil {
-		log.Error(err)
-		return nil
-	}
 
-	if len(remoteUrl) > 0 {
-		return
-	}
 	return nil
 }
 
