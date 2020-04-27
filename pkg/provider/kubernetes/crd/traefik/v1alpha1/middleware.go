@@ -22,6 +22,7 @@ type Middleware struct {
 type MiddlewareSpec struct {
 	AddPrefix         *dynamic.AddPrefix         `json:"addPrefix,omitempty"`
 	HuaweiLogin       *dynamic.HuaweiLogin       `json:"huaweiLogin,omitempty"`
+	SendAccessLog     *dynamic.SendAccessLog     `json:"sendAccessLog,omitempty"`
 	StripPrefix       *dynamic.StripPrefix       `json:"stripPrefix,omitempty"`
 	StripPrefixRegex  *dynamic.StripPrefixRegex  `json:"stripPrefixRegex,omitempty"`
 	ReplacePath       *dynamic.ReplacePath       `json:"replacePath,omitempty"`

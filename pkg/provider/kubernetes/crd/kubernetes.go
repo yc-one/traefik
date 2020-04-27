@@ -208,6 +208,7 @@ func (p *Provider) loadConfigurationFromCRD(ctx context.Context, client Client) 
 		conf.HTTP.Middlewares[id] = &dynamic.Middleware{
 			AddPrefix:         middleware.Spec.AddPrefix,
 			HuaweiLogin:       middleware.Spec.HuaweiLogin,
+			SendAccessLog:     middleware.Spec.SendAccessLog,
 			StripPrefix:       middleware.Spec.StripPrefix,
 			StripPrefixRegex:  middleware.Spec.StripPrefixRegex,
 			ReplacePath:       middleware.Spec.ReplacePath,

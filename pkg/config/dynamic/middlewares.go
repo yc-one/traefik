@@ -16,6 +16,7 @@ import (
 type Middleware struct {
 	AddPrefix         *AddPrefix         `json:"addPrefix,omitempty" toml:"addPrefix,omitempty" yaml:"addPrefix,omitempty"`
 	HuaweiLogin       *HuaweiLogin       `json:"huaweiLogin,omitempty" toml:"huaweiLogin,omitempty" yaml:"huaweiLogin,omitempty"`
+	SendAccessLog     *SendAccessLog     `json:"SendAccessLog,omitempty" toml:"SendAccessLog,omitempty" yaml:"SendAccessLog,omitempty"`
 	StripPrefix       *StripPrefix       `json:"stripPrefix,omitempty" toml:"stripPrefix,omitempty" yaml:"stripPrefix,omitempty"`
 	StripPrefixRegex  *StripPrefixRegex  `json:"stripPrefixRegex,omitempty" toml:"stripPrefixRegex,omitempty" yaml:"stripPrefixRegex,omitempty"`
 	ReplacePath       *ReplacePath       `json:"replacePath,omitempty" toml:"replacePath,omitempty" yaml:"replacePath,omitempty"`
@@ -49,6 +50,10 @@ type HuaweiLogin struct {
 	LoginUrl string `json:"loginUrl,omitempty" toml:"loginUrl,omitempty" yaml:"loginUrl,omitempty"`
 	User     string `json:"user,omitempty" toml:"user,omitempty" yaml:"user,omitempty"`
 	Password string `json:"password,omitempty" toml:"password,omitempty" yaml:"password,omitempty"`
+}
+
+type SendAccessLog struct {
+	RemoteUrl string `json:"remoteUrl,omitempty" toml:"remoteUrl,omitempty" yaml:"remoteUrl,omitempty"`
 }
 
 // +k8s:deepcopy-gen=true

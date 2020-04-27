@@ -26,6 +26,7 @@ import (
 	"github.com/containous/traefik/v2/pkg/middlewares/replacepath"
 	"github.com/containous/traefik/v2/pkg/middlewares/replacepathregex"
 	"github.com/containous/traefik/v2/pkg/middlewares/retry"
+	"github.com/containous/traefik/v2/pkg/middlewares/sendAccessLog"
 	"github.com/containous/traefik/v2/pkg/middlewares/stripprefix"
 	"github.com/containous/traefik/v2/pkg/middlewares/stripprefixregex"
 	"github.com/containous/traefik/v2/pkg/middlewares/tracing"
@@ -135,6 +136,13 @@ func (b *Builder) buildConstructor(ctx context.Context, middlewareName string) (
 		}
 		middleware = func(next http.Handler) (http.Handler, error) {
 			return auth.NewBasic(ctx, next, *config.BasicAuth, middlewareName)
+		}
+	}
+
+	if config.SendAccessLog != nil {
+		fmt.Println("create SendAccessLog begin...")
+		middleware = func(next http.Handler) (http.Handler, error) {
+			return sendaccesslog.New(ctx, next, *config.SendAccessLog, middlewareName)
 		}
 	}
 
