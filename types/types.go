@@ -104,6 +104,7 @@ type ServerRoute struct {
 	StripPrefixes      []string
 	StripPrefixesRegex []string
 	AddPrefix          string
+	SendLog            string
 	ReplacePath        string
 	ReplacePathRegex   string
 }

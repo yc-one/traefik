@@ -499,6 +499,13 @@ func buildMatcherMiddlewares(serverRoute *types.ServerRoute, handler http.Handle
 		}
 	}
 
+	if len(serverRoute.SendLog) > 0 {
+		handler = &middlewares.SendAccessLog{
+			RemoteUrl: serverRoute.SendLog,
+			Handler:   handler,
+		}
+	}
+
 	// strip prefix
 	if len(serverRoute.StripPrefixes) > 0 {
 		handler = &middlewares.StripPrefix{
