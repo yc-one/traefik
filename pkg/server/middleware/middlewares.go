@@ -26,7 +26,7 @@ import (
 	"github.com/containous/traefik/v2/pkg/middlewares/replacepath"
 	"github.com/containous/traefik/v2/pkg/middlewares/replacepathregex"
 	"github.com/containous/traefik/v2/pkg/middlewares/retry"
-	"github.com/containous/traefik/v2/pkg/middlewares/sendAccessLog"
+	"github.com/containous/traefik/v2/pkg/middlewares/sendaccesslog"
 	"github.com/containous/traefik/v2/pkg/middlewares/stripprefix"
 	"github.com/containous/traefik/v2/pkg/middlewares/stripprefixregex"
 	"github.com/containous/traefik/v2/pkg/middlewares/tracing"
