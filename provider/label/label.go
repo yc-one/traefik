@@ -26,6 +26,9 @@ const (
 	DefaultBackendLoadBalancerMethod               = "wrr"
 	DefaultBackendMaxconnExtractorFunc             = "request.host"
 	DefaultBackendLoadbalancerStickinessCookieName = ""
+	DefaultBackendLoadbalancerStickinessSecure     = false
+	DefaultBackendLoadbalancerStickinessHTTPOnly   = false
+	DefaultBackendLoadbalancerStickinessSameSite   = ""
 	DefaultBackendHealthCheckPort                  = 0
 )
 
@@ -43,6 +46,21 @@ func GetStringValue(labels map[string]string, labelName string, defaultValue str
 		return value
 	}
 	return defaultValue
+}
+
+// GetStringSafeValue get string value associated to a label and check if the content is "quotable".
+func GetStringSafeValue(labels map[string]string, labelName string, defaultValue string) (string, error) {
+	value, ok := labels[labelName]
+	if !ok || len(value) <= 0 {
+		return defaultValue, nil
+	}
+
+	_, err := strconv.Unquote(`"` + value + `"`)
+	if err != nil {
+		return value, err
+	}
+
+	return value, nil
 }
 
 // GetBoolValue get bool value associated to a label

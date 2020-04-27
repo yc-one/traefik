@@ -1,5 +1,57 @@
 # Change Log
 
+## [v1.7.24](https://github.com/containous/traefik/tree/v1.7.24) (2020-03-25)
+[All Commits](https://github.com/containous/traefik/compare/v1.7.23...v1.7.24)
+
+**Bug fixes:**
+- **[k8s/ingress]** fix: stickiness annotations support. ([#6576](https://github.com/containous/traefik/pull/6576) by [ldez](https://github.com/ldez))
+
+## [v1.7.23](https://github.com/containous/traefik/tree/v1.7.23) (2020-03-23)
+[All Commits](https://github.com/containous/traefik/compare/v1.7.22...v1.7.23)
+
+**Bug fixes:**
+- **[consul,consulcatalog,docker,ecs,k8s,marathon,mesos,rancher,sticky-session]** Fix sameSite ([#6537](https://github.com/containous/traefik/pull/6537) by [ldez](https://github.com/ldez))
+- **[server]** Force http/1.1 for upgrade ([#6553](https://github.com/containous/traefik/pull/6553) by [juliens](https://github.com/juliens))
+- **[tls]** fix: max TLS version. ([#6531](https://github.com/containous/traefik/pull/6531) by [ldez](https://github.com/ldez))
+
+## [v1.7.22](https://github.com/containous/traefik/tree/v1.7.22) (2020-03-09)
+[All Commits](https://github.com/containous/traefik/compare/v1.7.21...v1.7.22)
+
+**Bug fixes:**
+- **[provider]** Skip redirection with invalid regex syntax. ([#6446](https://github.com/containous/traefik/pull/6446) by [ldez](https://github.com/ldez))
+- **[server]** Clear closed hijacked h2c connections ([#6357](https://github.com/containous/traefik/pull/6357) by [omerkay](https://github.com/omerkay))
+
+**Documentation:**
+- **[acme]** fix: manual provider code name. ([#6456](https://github.com/containous/traefik/pull/6456) by [ldez](https://github.com/ldez))
+- **[docker]** Fix typo in user guide. ([#6386](https://github.com/containous/traefik/pull/6386) by [ldez](https://github.com/ldez))
+- **[k8s]** Complete TLS example for Kubernetes Ingress in user guide ([#6457](https://github.com/containous/traefik/pull/6457) by [rtribotte](https://github.com/rtribotte))
+- **[k8s]** Updated rbac and Daemonset example bloc ([#6375](https://github.com/containous/traefik/pull/6375) by [bjthomas1](https://github.com/bjthomas1))
+
+## [v1.7.21](https://github.com/containous/traefik/tree/v1.7.21) (2020-02-20)
+[All Commits](https://github.com/containous/traefik/compare/v1.7.20...v1.7.21)
+
+**Bug fixes:**
+- **[acme]** Fix dnspod update. ([#6240](https://github.com/containous/traefik/pull/6240) by [iineva](https://github.com/iineva))
+- **[acme]** Fix finding proper provided certificate when ACME is enabled ([#5873](https://github.com/containous/traefik/pull/5873) by [yazd](https://github.com/yazd))
+- **[authentication,middleware]** don&#39;t create http client in each request in forward auth ([#6273](https://github.com/containous/traefik/pull/6273) by [juliens](https://github.com/juliens))
+- **[ecs]** fix: skip ECS container when information are missing instead of panic. ([#6071](https://github.com/containous/traefik/pull/6071) by [ldez](https://github.com/ldez))
+- **[k8s]** Add edge case for root path with rewrite-target ([#6005](https://github.com/containous/traefik/pull/6005) by [dtomcej](https://github.com/dtomcej))
+
+**Documentation:**
+- **[k8s,k8s/ingress]** Update the k8s api version in the documentation ([#6162](https://github.com/containous/traefik/pull/6162) by [jbdoumenjou](https://github.com/jbdoumenjou))
+- **[middleware]** Improve rate-limiting doc ([#6277](https://github.com/containous/traefik/pull/6277) by [mpl](https://github.com/mpl))
+- **[provider]** Fix sample for ssl-header in docs ([#6337](https://github.com/containous/traefik/pull/6337) by [pierresteiner](https://github.com/pierresteiner))
+
+## [v1.7.20](https://github.com/containous/traefik/tree/v1.7.20) (2019-12-09)
+[All Commits](https://github.com/containous/traefik/compare/v1.7.19...v1.7.20)
+
+**Bug fixes:**
+- **[acme]** Truncate key for identification in log ([#5941](https://github.com/containous/traefik/pull/5941) by [dtomcej](https://github.com/dtomcej))
+- **[middleware]** fix: location header rewrite. ([#5857](https://github.com/containous/traefik/pull/5857) by [ldez](https://github.com/ldez))
+
+**Documentation:**
+- Add a warning note regarding optional TLS mutual auth ([#5434](https://github.com/containous/traefik/pull/5434) by [bradjones1](https://github.com/bradjones1))
+
 ## [v1.7.19](https://github.com/containous/traefik/tree/v1.7.19) (2019-10-25)
 [All Commits](https://github.com/containous/traefik/compare/v1.7.18...v1.7.19)
 

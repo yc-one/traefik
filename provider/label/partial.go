@@ -50,8 +50,13 @@ func GetRedirect(labels map[string]string) *types.Redirect {
 
 	if Has(labels, TraefikFrontendRedirectRegex) &&
 		Has(labels, TraefikFrontendRedirectReplacement) {
+		value, err := GetStringSafeValue(labels, TraefikFrontendRedirectRegex, "")
+		if err != nil {
+			log.Errorf("Invalid regex syntax: %s", value)
+			return nil
+		}
 		return &types.Redirect{
-			Regex:       GetStringValue(labels, TraefikFrontendRedirectRegex, ""),
+			Regex:       value,
 			Replacement: GetStringValue(labels, TraefikFrontendRedirectReplacement, ""),
 			Permanent:   permanent,
 		}
@@ -421,8 +426,12 @@ func GetLoadBalancer(labels map[string]string) *types.LoadBalancer {
 	}
 
 	if GetBoolValue(labels, TraefikBackendLoadBalancerStickiness, false) {
-		cookieName := GetStringValue(labels, TraefikBackendLoadBalancerStickinessCookieName, DefaultBackendLoadbalancerStickinessCookieName)
-		lb.Stickiness = &types.Stickiness{CookieName: cookieName}
+		lb.Stickiness = &types.Stickiness{
+			CookieName: GetStringValue(labels, TraefikBackendLoadBalancerStickinessCookieName, DefaultBackendLoadbalancerStickinessCookieName),
+			Secure:     GetBoolValue(labels, TraefikBackendLoadBalancerStickinessSecure, DefaultBackendLoadbalancerStickinessSecure),
+			HTTPOnly:   GetBoolValue(labels, TraefikBackendLoadBalancerStickinessHTTPOnly, DefaultBackendLoadbalancerStickinessHTTPOnly),
+			SameSite:   GetStringValue(labels, TraefikBackendLoadBalancerStickinessSameSite, DefaultBackendLoadbalancerStickinessSameSite),
+		}
 	}
 
 	return lb

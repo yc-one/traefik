@@ -167,15 +167,15 @@
   version = "1.1.0"
 
 [[constraint]]
-  branch = "v1"
   name = "github.com/unrolled/secure"
+  version = "1.0.5"
 
 [[constraint]]
   name = "github.com/vdemeester/shakers"
   version = "0.1.0"
 
 [[constraint]]
-  branch = "master"
+  version = "v1.1.0"
   name = "github.com/vulcand/oxy"
 
 [[constraint]]
@@ -272,3 +272,7 @@
 [[override]]
   name = "contrib.go.opencensus.io/exporter/ocagent"
   version = "0.4.12"
+
+[[override]]
+  name = "github.com/decker502/dnspod-go"
+  revision = "071171b22a9b65e4f544b61c143befd54a08a64e"

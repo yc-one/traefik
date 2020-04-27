@@ -53,6 +53,12 @@ rules:
       - get
       - list
       - watch
+  - apiGroups:
+    - extensions
+    resources:
+    - ingresses/status
+    verbs:
+    - update
 ---
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1beta1
@@ -98,7 +104,7 @@ metadata:
   namespace: kube-system
 ---
 kind: Deployment
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 metadata:
   name: traefik-ingress-controller
   namespace: kube-system
@@ -164,13 +170,17 @@ metadata:
   namespace: kube-system
 ---
 kind: DaemonSet
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 metadata:
   name: traefik-ingress-controller
   namespace: kube-system
   labels:
     k8s-app: traefik-ingress-lb
 spec:
+  selector:
+    matchLabels:
+      k8s-app: traefik-ingress-lb
+      name: traefik-ingress-lb
   template:
     metadata:
       labels:
@@ -188,6 +198,7 @@ spec:
           hostPort: 80
         - name: admin
           containerPort: 8080
+          hostPort: 8080
         securityContext:
           capabilities:
             drop:
@@ -358,7 +369,7 @@ spec:
 kubectl apply -f https://raw.githubusercontent.com/containous/traefik/v1.7/examples/k8s/ui.yaml
 ```
 
-Now lets setup an entry in our `/etc/hosts` file to route `traefik-ui.minikube` to our cluster.
+Now let's setup an entry in our `/etc/hosts` file to route `traefik-ui.minikube` to our cluster.
 
 In production you would want to set up real DNS entries.
 You can get the IP address of your minikube instance by running `minikube ip`:
@@ -381,6 +392,23 @@ You can add a TLS entrypoint by adding the following `args` to the container spe
  --defaultentrypoints=http,https
  --entrypoints=Name:https Address::443 TLS
  --entrypoints=Name:http Address::80
+```
+
+Now let's add the TLS port either to the deployment: 
+
+```
+ports:
+- name: https
+  containerPort: 443
+```
+
+or to the daemon set:
+
+```
+ports:
+- name: https
+  containerPort: 443
+  hostPort: 443
 ```
     
 To setup an HTTPS-protected ingress, you can leverage the TLS feature of the ingress resource.
@@ -503,7 +531,7 @@ First lets start by launching the pods for the cheese websites.
 ```yaml
 ---
 kind: Deployment
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 metadata:
   name: stilton
   labels:
@@ -529,7 +557,7 @@ spec:
         - containerPort: 80
 ---
 kind: Deployment
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 metadata:
   name: cheddar
   labels:
@@ -555,7 +583,7 @@ spec:
         - containerPort: 80
 ---
 kind: Deployment
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 metadata:
   name: wensleydale
   labels:
