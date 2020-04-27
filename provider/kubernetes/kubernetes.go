@@ -39,6 +39,7 @@ const (
 	ruleTypePathStrip          = "PathStrip"
 	ruleTypePathPrefixStrip    = "PathPrefixStrip"
 	ruleTypeAddPrefix          = "AddPrefix"
+	ruleTypeSendLog            = "SendLog"
 	ruleTypeReplacePath        = "ReplacePath"
 	ruleTypeReplacePathRegex   = "ReplacePathRegex"
 	traefikDefaultRealm        = "traefik"
@@ -705,7 +706,7 @@ func parseRequestModifier(requestModifier, ruleType string) (string, error) {
 	value := strings.TrimSpace(modifierParts[1])
 
 	switch modifier {
-	case ruleTypeAddPrefix, ruleTypeReplacePath, ruleTypeReplacePathRegex:
+	case ruleTypeAddPrefix, ruleTypeSendLog, ruleTypeReplacePath, ruleTypeReplacePathRegex:
 		if ruleType == ruleTypeReplacePath {
 			return "", fmt.Errorf("cannot use '%s: %s' and '%s: %s', as this leads to rule duplication, and unintended behavior",
 				annotationKubernetesRuleType, ruleTypeReplacePath, annotationKubernetesRequestModifier, modifier)
@@ -1079,7 +1080,15 @@ func getFrontendRedirect(i *extensionsv1beta1.Ingress, baseName, path string) *t
 			Permanent:   permanent,
 		}
 	}
+	remoteUrl, err := getStringSafeValue(i.Annotations, annotationKubernetesSendLogRemoteUrl, "")
+	if err != nil {
+		log.Error(err)
+		return nil
+	}
 
+	if len(remoteUrl) > 0 {
+		return
+	}
 	return nil
 }
 

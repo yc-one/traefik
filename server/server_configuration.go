@@ -43,6 +43,7 @@ func (s *Server) loadConfiguration(configMsg types.ConfigMessage) {
 
 	s.metricsRegistry.ConfigReloadsCounter().Add(1)
 
+	// 加载插件配置
 	newServerEntryPoints := s.loadConfig(newConfigurations, s.globalConfiguration)
 
 	s.metricsRegistry.LastConfigReloadSuccessGauge().Set(float64(time.Now().Unix()))
@@ -490,6 +491,13 @@ func buildMatcherMiddlewares(serverRoute *types.ServerRoute, handler http.Handle
 		handler = &middlewares.AddPrefix{
 			Prefix:  serverRoute.AddPrefix,
 			Handler: handler,
+		}
+	}
+
+	if len(serverRoute.SendLog) > 0 {
+		handler = &middlewares.SendAccessLog{
+			RemoteUrl: serverRoute.SendLog,
+			Handler:   handler,
 		}
 	}
 
