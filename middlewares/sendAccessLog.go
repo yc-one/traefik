@@ -50,7 +50,7 @@ func (s *SendAccessLog) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	requestParams["uriInfo"] = requestUri
 
 	//url := "http://localhost/test"
-	fmt.Println("准备发送post请求到sf-monitor, url:", s.RemoteUrl)
+	fmt.Println("准备发送post请求到sf-monitor, url:", "http://"+s.RemoteUrl)
 
 	bytesData, err := json.Marshal(requestParams)
 	if err != nil {
@@ -58,7 +58,7 @@ func (s *SendAccessLog) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 	reader := bytes.NewReader(bytesData)
-	request, err := http.NewRequest("POST", s.RemoteUrl, reader)
+	request, err := http.NewRequest("POST", "http://"+s.RemoteUrl, reader)
 
 	request.Header.Set("Content-Type", "application/json;charset=UTF-8")
 	client := http.Client{}
