@@ -292,8 +292,11 @@ func buildServerRoute(serverEntryPoint *serverEntryPoint, frontendName string, f
 		}
 
 		serverRoute.Route = newRoute
-
 		priority += len(route.Rule)
+
+		if strings.Contains(route.Rule, "SendLog") {
+			priority = priority - 1
+		}
 		log.Debugf("Creating route %s %s", routeName, route.Rule)
 	}
 
