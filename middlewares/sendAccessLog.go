@@ -73,4 +73,6 @@ func (s *SendAccessLog) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	str := (*string)(unsafe.Pointer(&respBytes))
 	fmt.Println("响应信息：", *str)
 
+	s.Handler.ServeHTTP(w, req)
+
 }
