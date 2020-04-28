@@ -27,7 +27,6 @@ func (s *SendAccessLog) SetHandler(Handler http.Handler) {
 
 func (s *SendAccessLog) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 
-	reqOrigin := req
 	// 获取参数: 请求时间，请求的服务， 请求体， 请求头信息
 	headerJson, err := json.Marshal(req.Header)
 	if err != nil {
@@ -35,6 +34,7 @@ func (s *SendAccessLog) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 	body, err := ioutil.ReadAll(req.Body)
+	req.Body = ioutil.NopCloser(bytes.NewBuffer(body))
 	if err != nil {
 		fmt.Println("解析请求体信息出错:/n", err.Error())
 		return
@@ -75,6 +75,6 @@ func (s *SendAccessLog) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	str := (*string)(unsafe.Pointer(&respBytes))
 	fmt.Println("响应信息：", *str)
 
-	s.Handler.ServeHTTP(w, reqOrigin)
+	s.Handler.ServeHTTP(w, req)
 
 }
