@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"unsafe"
 )
 
 const (
@@ -59,21 +58,18 @@ func (s *SendAccessLog) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 		fmt.Println(err.Error())
 		return
 	}
-	reader := bytes.NewReader(bytesData)
-	request, err := http.NewRequest("POST", "http://"+s.RemoteUrl, reader)
+	go func(byteDate []byte) {
+		reader := bytes.NewReader(bytesData)
+		request, err := http.NewRequest("POST", "http://"+s.RemoteUrl, reader)
 
-	request.Header.Set("Content-Type", "application/json;charset=UTF-8")
-	client := http.Client{}
-	resp, err := client.Do(request)
-
-	respBytes, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		fmt.Println(err.Error())
-		return
-	}
-
-	str := (*string)(unsafe.Pointer(&respBytes))
-	fmt.Println("响应信息：", *str)
+		request.Header.Set("Content-Type", "application/json;charset=UTF-8")
+		client := http.Client{}
+		_, err = client.Do(request)
+		if err != nil {
+			fmt.Println(err.Error())
+			return
+		}
+	}(bytesData)
 
 	s.Handler.ServeHTTP(w, req)
 
