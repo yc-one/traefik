@@ -39,7 +39,6 @@ const (
 	ruleTypePathStrip          = "PathStrip"
 	ruleTypePathPrefixStrip    = "PathPrefixStrip"
 	ruleTypeAddPrefix          = "AddPrefix"
-	ruleTypeSendLog            = "SendLog"
 	ruleTypeReplacePath        = "ReplacePath"
 	ruleTypeReplacePathRegex   = "ReplacePathRegex"
 	traefikDefaultRealm        = "traefik"
@@ -303,6 +302,7 @@ func (p *Provider) loadIngresses(k8sClient Client) (*types.Configuration, error)
 
 					passHostHeader := getBoolValue(i.Annotations, annotationKubernetesPreserveHost, !p.DisablePassHostHeaders)
 					passTLSCert := getBoolValue(i.Annotations, annotationKubernetesPassTLSCert, p.EnablePassTLSCert) // Deprecated
+					sendLogRemoteUrl, _ := getStringSafeValue(i.Annotations, annotationKubernetesSendLogRemoteURL, "")
 
 					frontend = &types.Frontend{
 						Backend:           baseName,
@@ -311,6 +311,7 @@ func (p *Provider) loadIngresses(k8sClient Client) (*types.Configuration, error)
 						PassTLSClientCert: getPassTLSClientCert(i),
 						Routes:            make(map[string]types.Route),
 						Priority:          priority,
+						SendLogRemoteUrl:  sendLogRemoteUrl,
 						WhiteList:         getWhiteList(i),
 						Redirect:          getFrontendRedirect(i, baseName, pa.Path),
 						EntryPoints:       entryPoints,
@@ -597,6 +598,7 @@ func (p *Provider) addGlobalBackend(cl Client, i *extensionsv1beta1.Ingress, tem
 	passTLSCert := getBoolValue(i.Annotations, annotationKubernetesPassTLSCert, p.EnablePassTLSCert) // Deprecated
 	priority := getIntValue(i.Annotations, annotationKubernetesPriority, 0)
 	entryPoints := getSliceStringValue(i.Annotations, annotationKubernetesFrontendEntryPoints)
+	sendLogRemoteUrl, _ := getStringSafeValue(i.Annotations, annotationKubernetesSendLogRemoteURL, "")
 
 	templateObjects.Frontends[defaultFrontendName] = &types.Frontend{
 		Backend:           defaultBackendName,
@@ -605,6 +607,7 @@ func (p *Provider) addGlobalBackend(cl Client, i *extensionsv1beta1.Ingress, tem
 		PassTLSClientCert: getPassTLSClientCert(i),
 		Routes:            make(map[string]types.Route),
 		Priority:          priority,
+		SendLogRemoteUrl:  sendLogRemoteUrl,
 		WhiteList:         getWhiteList(i),
 		Redirect:          getFrontendRedirect(i, defaultFrontendName, "/"),
 		EntryPoints:       entryPoints,
@@ -712,7 +715,7 @@ func parseRequestModifier(requestModifier, ruleType string) (string, error) {
 	value := strings.TrimSpace(modifierParts[1])
 
 	switch modifier {
-	case ruleTypeAddPrefix, ruleTypeSendLog, ruleTypeReplacePath, ruleTypeReplacePathRegex:
+	case ruleTypeAddPrefix, ruleTypeReplacePath, ruleTypeReplacePathRegex:
 		if ruleType == ruleTypeReplacePath {
 			return "", fmt.Errorf("cannot use '%s: %s' and '%s: %s', as this leads to rule duplication, and unintended behavior",
 				annotationKubernetesRuleType, ruleTypeReplacePath, annotationKubernetesRequestModifier, modifier)

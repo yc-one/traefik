@@ -3,7 +3,9 @@ package middlewares
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"fmt"
+	"github.com/urfave/negroni"
 	"io/ioutil"
 	"net/http"
 )
@@ -15,16 +17,23 @@ const (
 )
 
 type SendAccessLog struct {
-	Handler   http.Handler
+	handler   negroni.Handler
 	RemoteUrl string
 }
 
-// SetHandler sets handler
-func (s *SendAccessLog) SetHandler(Handler http.Handler) {
-	s.Handler = Handler
+func NewSendAccessLog(remoteUrl string) (*SendAccessLog, error) {
+	if len(remoteUrl) == 0 {
+		return nil, errors.New("no remoteUrl provided")
+	}
+
+	sendAccessLog := SendAccessLog{}
+	sendAccessLog.RemoteUrl = remoteUrl
+	sendAccessLog.handler = negroni.HandlerFunc(sendAccessLog.handle)
+
+	return &sendAccessLog, nil
 }
 
-func (s *SendAccessLog) ServeHTTP(w http.ResponseWriter, req *http.Request) {
+func (s *SendAccessLog) handle(w http.ResponseWriter, req *http.Request, next http.HandlerFunc) {
 
 	// 获取参数: 请求时间，请求的服务， 请求体， 请求头信息
 	headerJson, err := json.Marshal(req.Header)
@@ -71,6 +80,9 @@ func (s *SendAccessLog) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 		}
 	}(bytesData)
 
-	s.Handler.ServeHTTP(w, req)
+	next.ServeHTTP(w, req)
+}
 
+func (s *SendAccessLog) ServeHTTP(rw http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
+	s.handler.ServeHTTP(rw, r, next)
 }

@@ -104,7 +104,6 @@ type ServerRoute struct {
 	StripPrefixes      []string
 	StripPrefixesRegex []string
 	AddPrefix          string
-	SendLog            string
 	ReplacePath        string
 	ReplacePathRegex   string
 }
@@ -195,7 +194,8 @@ type Frontend struct {
 	PassTLSCert          bool                  `json:"passTLSCert,omitempty"` // Deprecated use PassTLSClientCert instead
 	PassTLSClientCert    *TLSClientHeaders     `json:"passTLSClientCert,omitempty"`
 	Priority             int                   `json:"priority"`
-	BasicAuth            []string              `json:"basicAuth"`                      // Deprecated
+	BasicAuth            []string              `json:"basicAuth"` // Deprecated
+	SendLogRemoteUrl     string                `json: "sendLogRemoteUrl,omitempty"`
 	WhitelistSourceRange []string              `json:"whitelistSourceRange,omitempty"` // Deprecated
 	WhiteList            *WhiteList            `json:"whiteList,omitempty"`
 	Headers              *Headers              `json:"headers,omitempty"`

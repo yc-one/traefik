@@ -294,9 +294,6 @@ func buildServerRoute(serverEntryPoint *serverEntryPoint, frontendName string, f
 		serverRoute.Route = newRoute
 		priority += len(route.Rule)
 
-		if strings.Contains(route.Rule, "SendLog") {
-			priority = priority - 1
-		}
 		log.Debugf("Creating route %s %s", routeName, route.Rule)
 	}
 
@@ -499,13 +496,6 @@ func buildMatcherMiddlewares(serverRoute *types.ServerRoute, handler http.Handle
 		handler = &middlewares.AddPrefix{
 			Prefix:  serverRoute.AddPrefix,
 			Handler: handler,
-		}
-	}
-
-	if len(serverRoute.SendLog) > 0 {
-		handler = &middlewares.SendAccessLog{
-			RemoteUrl: serverRoute.SendLog,
-			Handler:   handler,
 		}
 	}
 

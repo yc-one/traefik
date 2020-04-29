@@ -19,6 +19,7 @@ const (
 	annotationKubernetesAuthForwardTLSSecret            = "ingress.kubernetes.io/auth-tls-secret"
 	annotationKubernetesAuthForwardTLSInsecure          = "ingress.kubernetes.io/auth-tls-insecure"
 	annotationKubernetesRewriteTarget                   = "ingress.kubernetes.io/rewrite-target"
+	annotationKubernetesSendLogRemoteURL                = "ingress.kubernetes.io/send-log-remote-url"
 	annotationKubernetesWhiteListSourceRange            = "ingress.kubernetes.io/whitelist-source-range"
 	annotationKubernetesWhiteListUseXForwardedFor       = "ingress.kubernetes.io/whitelist-x-forwarded-for"
 	annotationKubernetesPreserveHost                    = "ingress.kubernetes.io/preserve-host"

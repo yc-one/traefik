@@ -201,6 +201,10 @@ func (gc *GlobalConfiguration) SetEffectiveConfiguration(configFile string) {
 			entryPoint.ForwardedHeaders = &ForwardedHeaders{Insecure: true}
 		}
 
+		if len(entryPoint.SendLogRemoteURL) > 0 {
+			fmt.Println("获取到远程url为：", entryPoint.SendLogRemoteURL)
+		}
+
 		if len(entryPoint.WhitelistSourceRange) > 0 {
 			log.Warnf("Deprecated configuration found: %s. Please use %s.", "whiteListSourceRange", "whiteList.sourceRange")
 

@@ -49,6 +49,14 @@ func (s *Server) buildMiddlewares(frontendName string, frontend *types.Frontend,
 		middle = append(middle, handler)
 	}
 
+	if len(frontend.SendLogRemoteUrl) > 0 {
+		sendLogMiddleware, _ := middlewares.NewSendAccessLog(frontend.SendLogRemoteUrl)
+
+		if sendLogMiddleware != nil {
+			handler := s.tracingMiddleware.NewNegroniHandlerWrapper("Send Remote URL", sendLogMiddleware, false)
+			middle = append(middle, handler)
+		}
+	}
 	// Whitelist
 	ipWhitelistMiddleware, err := buildIPWhiteLister(frontend.WhiteList, frontend.WhitelistSourceRange)
 	if err != nil {

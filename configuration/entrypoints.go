@@ -12,9 +12,10 @@ import (
 // EntryPoint holds an entry point configuration of the reverse proxy (ip, port, TLS...)
 type EntryPoint struct {
 	Address              string
-	TLS                  *tls.TLS          `export:"true"`
-	Redirect             *types.Redirect   `export:"true"`
-	Auth                 *types.Auth       `export:"true"`
+	TLS                  *tls.TLS        `export:"true"`
+	Redirect             *types.Redirect `export:"true"`
+	Auth                 *types.Auth     `export:"true"`
+	SendLogRemoteURL     string
 	WhitelistSourceRange []string          // Deprecated
 	WhiteList            *types.WhiteList  `export:"true"`
 	Compress             bool              `export:"true"`
